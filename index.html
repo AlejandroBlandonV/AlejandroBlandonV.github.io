@@ -1,0 +1,1788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Alejandro Blandón · Data Analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg:        #04201A;
+    --bg2:       #071f18;
+    --surface:   #0a2e24;
+    --surface2:  #0d3a2e;
+    --teal:      #1D9E75;
+    --teal-lt:   #5DCAA5;
+    --teal-dim:  #9FE1CB;
+    --blue:      #378ADD;
+    --blue-lt:   #85B7EB;
+    --text:      #E8F5F1;
+    --text-sec:  #7BBCA8;
+    --text-dim:  #3d6e5e;
+    --border:    #0F4D3A;
+    --code-bg:   #021510;
+    --amber:     #EF9F27;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 18px 60px;
+    background: rgba(4,32,26,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 18px;
+    color: var(--teal-dim);
+    letter-spacing: 0.5px;
+  }
+  .nav-logo span { color: var(--teal); }
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px; font-weight: 400;
+    color: var(--text-sec);
+    text-decoration: none;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--teal-dim); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 120px 60px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(29,158,117,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(29,158,117,0.06) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(29,158,117,0.12) 0%, transparent 70%);
+    top: -100px; right: -100px;
+    pointer-events: none;
+  }
+
+  .hero-content { position: relative; z-index: 1; max-width: 780px; }
+
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px; font-weight: 500;
+    color: var(--teal);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: 1px solid rgba(29,158,117,0.35);
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 28px;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--teal);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(52px, 7vw, 88px);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -2px;
+    margin-bottom: 8px;
+  }
+  h1 .name-teal { color: var(--teal-lt); }
+  h1 .name-dim  { color: var(--teal-dim); opacity: 0.5; }
+
+  .hero-role {
+    font-family: 'DM Mono', monospace;
+    font-size: 15px;
+    color: var(--text-sec);
+    margin-bottom: 28px;
+    letter-spacing: 0.5px;
+  }
+  .hero-role span { color: var(--teal); }
+
+  .hero-bio {
+    font-size: 17px;
+    color: var(--text-sec);
+    max-width: 560px;
+    line-height: 1.75;
+    margin-bottom: 44px;
+  }
+
+  .hero-cta {
+    display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
+  }
+  .btn-primary {
+    background: var(--teal);
+    color: #04201A;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px; font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 14px 28px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { background: var(--teal-lt); transform: translateY(-1px); }
+
+  .btn-ghost {
+    border: 1px solid var(--border);
+    color: var(--text-sec);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px; font-weight: 400;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 14px 28px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--teal); color: var(--teal-dim); }
+
+  /* ── STATS ROW ── */
+  .hero-stats {
+    position: absolute; bottom: 60px; right: 60px;
+    display: flex; gap: 48px;
+    font-family: 'DM Mono', monospace;
+  }
+  .stat { text-align: right; }
+  .stat-num {
+    font-size: 32px; font-weight: 500;
+    color: var(--teal-lt);
+    display: block;
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 11px; color: var(--text-dim);
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+
+  /* ── SECTION BASE ── */
+  section { padding: 100px 60px; }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; font-weight: 500;
+    color: var(--teal);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 20px;
+  }
+  h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  /* ── ABOUT ── */
+  #about { background: var(--bg2); }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+    margin-top: 60px;
+  }
+  .about-text p {
+    color: var(--text-sec);
+    font-size: 16px;
+    margin-bottom: 18px;
+    line-height: 1.8;
+  }
+  .about-text p strong { color: var(--teal-dim); font-weight: 500; }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .skill-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    transition: border-color 0.2s;
+  }
+  .skill-card:hover { border-color: var(--teal); }
+  .skill-card-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; font-weight: 500;
+    color: var(--teal);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .skill-tags {
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    background: rgba(29,158,117,0.12);
+    color: var(--teal-dim);
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(29,158,117,0.2);
+  }
+  .tag.blue {
+    background: rgba(55,138,221,0.12);
+    color: var(--blue-lt);
+    border-color: rgba(55,138,221,0.2);
+  }
+
+  .contact-row {
+    margin-top: 36px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .contact-item {
+    display: flex; align-items: center; gap: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px; color: var(--text-sec);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .contact-item:hover { color: var(--teal-dim); }
+  .contact-icon {
+    width: 32px; height: 32px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    background: var(--surface);
+  }
+  .contact-icon svg { width: 14px; height: 14px; fill: var(--teal); }
+
+  /* ── PROJECTS ── */
+  #projects { background: var(--bg); }
+  .projects-intro {
+    color: var(--text-sec);
+    font-size: 17px;
+    max-width: 600px;
+    margin-bottom: 70px;
+  }
+
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 60px;
+    transition: border-color 0.3s;
+  }
+  .project-card:hover { border-color: var(--teal); }
+
+  .project-header {
+    padding: 40px 48px 32px;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 20px;
+    align-items: start;
+  }
+  .project-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .project-type::before {
+    content: '';
+    width: 24px; height: 1px;
+    background: var(--teal);
+  }
+  .project-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px; font-weight: 700;
+    color: var(--text);
+    margin-bottom: 14px;
+    letter-spacing: -0.5px;
+  }
+  .project-desc {
+    color: var(--text-sec);
+    font-size: 15px;
+    max-width: 580px;
+    line-height: 1.75;
+  }
+  .project-badges {
+    display: flex; flex-direction: column; gap: 8px; align-items: flex-end;
+  }
+  .badge-tech {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(29,158,117,0.3);
+    color: var(--teal-dim);
+    background: rgba(29,158,117,0.08);
+    white-space: nowrap;
+  }
+
+  .project-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    padding: 0 48px;
+  }
+  .tab {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px; font-weight: 500;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 16px 0;
+    margin-right: 32px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    background: none; border-left: none; border-right: none; border-top: none;
+    outline: none;
+  }
+  .tab.active { color: var(--teal-lt); border-bottom-color: var(--teal); }
+  .tab:hover:not(.active) { color: var(--text-sec); }
+
+  .tab-content { display: none; padding: 40px 48px; }
+  .tab-content.active { display: block; }
+
+  /* Context, findings, conclusions sections */
+  .content-section { margin-bottom: 36px; }
+  .content-section h4 {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; font-weight: 500;
+    color: var(--teal);
+    letter-spacing: 2px; text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .content-section h4::after {
+    content: '';
+    flex: 1; height: 1px;
+    background: var(--border);
+  }
+  .content-section p {
+    color: var(--text-sec);
+    font-size: 15px; line-height: 1.8;
+    margin-bottom: 12px;
+  }
+  .finding-list {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 10px;
+    margin-top: 4px;
+  }
+  .finding-list li {
+    display: flex; gap: 12px;
+    color: var(--text-sec);
+    font-size: 15px; line-height: 1.7;
+    padding: 12px 16px;
+    background: rgba(29,158,117,0.05);
+    border-left: 2px solid var(--teal);
+    border-radius: 0 6px 6px 0;
+  }
+  .finding-list li strong { color: var(--teal-dim); font-weight: 500; }
+
+  /* ── CODE BLOCK ── */
+  .code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 16px 0;
+  }
+  .code-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 20px;
+    background: rgba(29,158,117,0.07);
+    border-bottom: 1px solid var(--border);
+  }
+  .code-filename {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px; color: var(--text-sec);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .code-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); opacity: 0.6; }
+  .code-lang {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; color: var(--teal);
+    background: rgba(29,158,117,0.15);
+    padding: 2px 8px; border-radius: 4px;
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  .code-body {
+    padding: 24px 24px;
+    overflow-x: auto;
+  }
+  pre {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #c8e6c9;
+    white-space: pre;
+    margin: 0;
+  }
+  .kw  { color: #5DCAA5; }
+  .fn  { color: #85B7EB; }
+  .str { color: #EF9F27; }
+  .cm  { color: #3d6e5e; font-style: italic; }
+  .num { color: #9FE1CB; }
+
+  /* ── VISUALIZATIONS ── */
+  .viz-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 16px;
+  }
+  .viz-card {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+  }
+  .viz-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; font-weight: 500;
+    color: var(--teal);
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  /* Funnel chart */
+  .funnel { display: flex; flex-direction: column; gap: 6px; }
+  .funnel-stage {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .funnel-bar-wrap { flex: 1; background: rgba(29,158,117,0.08); border-radius: 4px; height: 32px; overflow: hidden; }
+  .funnel-bar {
+    height: 100%;
+    background: var(--teal);
+    border-radius: 4px;
+    display: flex; align-items: center; padding-left: 10px;
+    transition: width 1s ease;
+  }
+  .funnel-bar-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; color: #04201A;
+    font-weight: 500; white-space: nowrap;
+  }
+  .funnel-pct {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; color: var(--text-sec);
+    min-width: 38px; text-align: right;
+  }
+  .funnel-stage-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; color: var(--text-dim);
+    min-width: 80px; text-align: right;
+  }
+
+  /* Cohort table */
+  .cohort-table { width: 100%; border-collapse: collapse; }
+  .cohort-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; color: var(--teal);
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 6px 8px; text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .cohort-table td {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; padding: 7px 8px;
+    text-align: center; border-radius: 4px;
+  }
+  .cohort-table tr td:first-child {
+    color: var(--text-sec); text-align: left; font-size: 10px;
+  }
+  .cell-100 { background: rgba(29,158,117,0.5); color: #9FE1CB; }
+  .cell-80  { background: rgba(29,158,117,0.35); color: #9FE1CB; }
+  .cell-60  { background: rgba(29,158,117,0.22); color: #7BBCA8; }
+  .cell-40  { background: rgba(29,158,117,0.12); color: #3d6e5e; }
+  .cell-20  { background: rgba(29,158,117,0.05); color: #2a4f41; }
+
+  /* Scatter / bar charts for Python project */
+  .bar-chart { display: flex; flex-direction: column; gap: 10px; }
+  .bar-row { display: flex; align-items: center; gap: 10px; }
+  .bar-city {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; color: var(--text-sec);
+    min-width: 90px; text-align: right;
+  }
+  .bar-track { flex: 1; height: 22px; background: rgba(29,158,117,0.06); border-radius: 4px; overflow: hidden; }
+  .bar-fill {
+    height: 100%; border-radius: 4px;
+    display: flex; align-items: center; padding-left: 8px;
+    font-family: 'DM Mono', monospace; font-size: 10px; color: #04201A; font-weight: 500;
+  }
+  .bar-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; color: var(--text-dim);
+    min-width: 32px;
+  }
+
+  /* Scatter (SVG mini) */
+  .scatter-wrap { overflow: hidden; }
+
+  /* ── CONCLUSION CARD ── */
+  .conclusion-card {
+    background: rgba(29,158,117,0.07);
+    border: 1px solid rgba(29,158,117,0.2);
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-top: 8px;
+  }
+  .conclusion-card p {
+    color: var(--teal-dim);
+    font-size: 15px; line-height: 1.8;
+    margin: 0;
+  }
+  .conclusion-card p strong { color: var(--teal-lt); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    padding: 48px 60px;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 20px;
+  }
+  .footer-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px; font-weight: 700;
+    color: var(--teal-dim);
+  }
+  .footer-copy {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px; color: var(--text-dim);
+  }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px; color: var(--text-sec);
+    text-decoration: none; letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--teal-lt); }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--teal); border-radius: 3px; }
+
+  /* ── FADE IN ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* ═══════════════════════════════════════
+     MOBILE RESPONSIVE — max 768px
+  ═══════════════════════════════════════ */
+  @media (max-width: 768px) {
+
+    /* NAV */
+    nav {
+      padding: 14px 20px;
+    }
+    .nav-links {
+      gap: 18px;
+    }
+    .nav-links a {
+      font-size: 11px;
+    }
+
+    /* HERO */
+    #hero {
+      padding: 100px 24px 140px;
+      min-height: 100svh;
+      align-items: flex-start;
+    }
+    .hero-content {
+      max-width: 100%;
+    }
+    h1 {
+      font-size: clamp(40px, 11vw, 60px);
+      letter-spacing: -1px;
+      line-height: 1.0;
+    }
+    .hero-role {
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .hero-bio {
+      font-size: 15px;
+      max-width: 100%;
+    }
+    .hero-cta {
+      flex-direction: column;
+      gap: 12px;
+    }
+    .btn-primary, .btn-ghost {
+      width: 100%;
+      text-align: center;
+      padding: 14px 20px;
+    }
+    .hero-stats {
+      position: relative;
+      bottom: auto; right: auto;
+      margin-top: 40px;
+      justify-content: flex-start;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+    .stat-num { font-size: 24px; }
+    .hero-glow { width: 300px; height: 300px; }
+
+    /* SECTIONS */
+    section { padding: 64px 24px; }
+
+    /* ABOUT */
+    .about-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .skills-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .skill-card[style*="grid-column"] {
+      grid-column: span 2;
+    }
+
+    /* PROJECTS */
+    .project-header {
+      grid-template-columns: 1fr;
+      padding: 28px 24px 24px;
+    }
+    .project-badges {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+    .project-title { font-size: 22px; }
+    .project-tabs { padding: 0 24px; overflow-x: auto; }
+    .tab { white-space: nowrap; padding: 14px 0; margin-right: 20px; }
+    .tab-content { padding: 28px 24px; }
+
+    /* VIZ GRIDS — stack on mobile */
+    .viz-grid {
+      grid-template-columns: 1fr !important;
+    }
+    .viz-grid [style*="grid-column: span 2"] {
+      grid-column: span 1 !important;
+    }
+    .viz-card { padding: 18px 16px; }
+
+    /* FUNNEL */
+    .funnel-stage-name { min-width: 72px !important; font-size: 9px; }
+    .funnel-bar-label  { font-size: 8px; }
+
+    /* COHORT TABLE — scrollable */
+    .cohort-table { font-size: 10px; }
+    .cohort-table th, .cohort-table td { padding: 5px 4px; }
+    .viz-card:has(.cohort-table) { overflow-x: auto; }
+
+    /* CODE BLOCKS */
+    .code-body { padding: 16px 14px; }
+    pre { font-size: 11px; }
+
+    /* FINDING LIST */
+    .finding-list li { font-size: 14px; }
+
+    /* CONTACT */
+    .contact-item { font-size: 12px; }
+
+    /* SCATTER SVG — reduce size */
+    #scatter-svg { max-height: 220px; }
+
+    /* QUADRANT GRID — 1 col on small */
+    .viz-card > div[style*="grid-template-columns:1fr 1fr"] {
+      display: grid;
+      grid-template-columns: 1fr 1fr !important;
+      gap: 8px !important;
+    }
+
+    /* FOOTER */
+    footer {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 40px 24px;
+      gap: 16px;
+    }
+    .footer-links { gap: 16px; flex-wrap: wrap; }
+
+    /* H2 */
+    h2 { font-size: clamp(28px, 8vw, 40px); }
+  }
+
+  /* Extra small — 400px and below */
+  @media (max-width: 400px) {
+    h1 { font-size: 36px; }
+    .hero-stats { gap: 24px; }
+    .stat-num { font-size: 20px; }
+    .nav-links a { font-size: 10px; letter-spacing: 0.5px; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .project-type { font-size: 10px; }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">ab<span>.</span>dev</div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content fade-in">
+    <div class="hero-tag">Available for opportunities</div>
+    <h1>
+      <span class="name-teal">Alejandro</span><br/>
+      <span>Blandón</span><br/>
+      <span class="name-dim">Vargas</span>
+    </h1>
+    <p class="hero-role">
+      <span>Data Analyst Jr</span> · TripleTen Certified · Medellín, Colombia
+    </p>
+    <p class="hero-bio">
+      I transform raw data into business decisions. SQL funnels, Python pipelines, Power BI dashboards — I cover the full data cycle from ingestion to insight.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn-primary">View Projects</a>
+      <a href="mailto:alejandroblandonvargas@gmail.com" class="btn-ghost">Contact Me</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-num">+100K</span>
+      <span class="stat-label">Records Processed</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">30%</span>
+      <span class="stat-label">Report Time Reduced</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">2</span>
+      <span class="stat-label">Projects Live</span>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">// about me</div>
+  <h2>The analyst<br/>behind the data</h2>
+  <div class="about-grid fade-in">
+    <div class="about-text">
+      <p>
+        I'm a <strong>Data Analyst Jr</strong> and Administrative Engineer based in Medellín, Colombia. I graduated from Universidad Pontificia Bolivariana and completed a <strong>Data Analytics Bootcamp at TripleTen (2026)</strong>, where I built end-to-end projects using SQL and Python.
+      </p>
+      <p>
+        My work focuses on converting messy, large-scale datasets into <strong>clear narratives and actionable recommendations</strong>. I've worked across e-commerce, manufacturing, and urban analytics domains.
+      </p>
+      <p>
+        I communicate findings to both technical teams and C-level stakeholders — bridging the gap between data and decision-making. I'm currently open to <strong>Data Analyst Jr or Junior BI Analyst</strong> roles.
+      </p>
+
+      <div id="contact" class="contact-row" style="margin-top: 32px;">
+        <a href="mailto:alejandroblandonvargas@gmail.com" class="contact-item">
+          <span class="contact-icon">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          </span>
+          alejandroblandonvargas@gmail.com
+        </a>
+        <a href="https://linkedin.com/in/alejandro-blandon-vargas" target="_blank" class="contact-item">
+          <span class="contact-icon">
+            <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </span>
+          linkedin.com/in/alejandro-blandon-vargas
+        </a>
+        <a href="https://github.com/AlejandroBlandonV" target="_blank" class="contact-item">
+          <span class="contact-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+          </span>
+          github.com/AlejandroBlandonV
+        </a>
+        <span class="contact-item">
+          <span class="contact-icon">
+            <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          </span>
+          +57 302 378 0041
+        </span>
+      </div>
+    </div>
+
+    <div>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <div class="skill-card-title">Languages</div>
+          <div class="skill-tags">
+            <span class="tag">SQL</span>
+            <span class="tag">Python</span>
+            <span class="tag">DAX</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-title">Libraries</div>
+          <div class="skill-tags">
+            <span class="tag">Pandas</span>
+            <span class="tag">NumPy</span>
+            <span class="tag">Matplotlib</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-title">BI & Tools</div>
+          <div class="skill-tags">
+            <span class="tag">Power BI</span>
+            <span class="tag">Jupyter</span>
+            <span class="tag">dbt</span>
+            <span class="tag">Git</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-card-title">Methodologies</div>
+          <div class="skill-tags">
+            <span class="tag">ETL</span>
+            <span class="tag">EDA</span>
+            <span class="tag">A/B Testing</span>
+            <span class="tag">Cohort Analysis</span>
+          </div>
+        </div>
+        <div class="skill-card" style="grid-column: span 2;">
+          <div class="skill-card-title">Automation & Infra</div>
+          <div class="skill-tags">
+            <span class="tag blue">Power Automate</span>
+            <span class="tag blue">RPA</span>
+            <span class="tag blue">SAP</span>
+            <span class="tag blue">Excel Advanced</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">// projects</div>
+  <h2>Selected Work</h2>
+  <p class="projects-intro">Two end-to-end data projects from the TripleTen bootcamp — real datasets, real methodologies, real insights.</p>
+
+  <!-- ─── PROJECT 1: SQL ─── -->
+  <div class="project-card fade-in">
+    <div class="project-header">
+      <div>
+        <div class="project-type">Project 01 · SQL Analysis</div>
+        <div class="project-title">Funnel &amp; Retention Analysis<br/>for MercadoLibre</div>
+        <div class="project-desc">
+          End-to-end behavioral analysis of MercadoLibre users using real event-level data
+          (Jan–Aug 2025). Built a 6-stage conversion funnel and cohort retention matrix
+          segmented by country to identify critical drop-off points and loyalty patterns across Latin America.
+        </div>
+      </div>
+      <div class="project-badges">
+        <span class="badge-tech">SQL · CTEs · LEFT JOINs</span>
+        <span class="badge-tech">Funnel Analysis</span>
+        <span class="badge-tech">Cohort Retention</span>
+        <span class="badge-tech">TripleTen 2026</span>
+      </div>
+    </div>
+
+    <div class="project-tabs">
+      <button class="tab active" onclick="switchTab(this, 'p1-context')">Context</button>
+      <button class="tab" onclick="switchTab(this, 'p1-code')">Code</button>
+      <button class="tab" onclick="switchTab(this, 'p1-viz')">Visualizations</button>
+      <button class="tab" onclick="switchTab(this, 'p1-conclusions')">Conclusions</button>
+    </div>
+
+    <!-- CONTEXT -->
+    <div id="p1-context" class="tab-content active">
+      <div class="content-section">
+        <h4>Context</h4>
+        <p>MercadoLibre is Latin America's leading e-commerce platform. This project analyzed real user event logs from Jan 1 to Aug 31, 2025, covering the full purchase journey across 10 countries. Two databases were used: <strong>mercadolibre_funnel</strong> (conversion events) and <strong>mercadolibre_retention</strong> (user activity by day after signup).</p>
+        <p>The goal was to answer two business questions: <em>Where does the funnel leak the most?</em> and <em>How well does the platform retain users over 28 days?</em> All queries used CTEs with LEFT JOINs, segmented by country and cohort month.</p>
+      </div>
+      <div class="content-section">
+        <h4>Key Findings</h4>
+        <ul class="finding-list">
+          <li><strong>Biggest drop-off: select_item → add_to_cart at −85.7%</strong> (76.9% → 11.0%). This single step loses nearly 9 in 10 users who showed product intent — the #1 revenue bottleneck.</li>
+          <li><strong>Paraguay is the highest-risk country</strong>: 100% of users abandon at begin_checkout — zero reach payment or purchase. Likely a payment method or UX barrier.</li>
+          <li><strong>Uruguay leads conversion</strong> with 4.5% purchase rate vs 1.25% global average — 3.6× better than the platform mean.</li>
+          <li><strong>Mexico leads 28-day retention</strong> at 3.1% (D28), with best D14 and D21 rates across all countries (55.8% and 25.5% respectively). Only Peru edges it out at D28 with 3.2%.</li>
+          <li>The <strong>March 2025 cohort</strong> was the strongest overall: 87.7% D7, 56.8% D14, 26.6% D21 — the best 3-metric cohort in the dataset.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CODE -->
+    <div id="p1-code" class="tab-content">
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename"><span class="code-dot"></span>funnel_general.sql</span>
+          <span class="code-lang">SQL</span>
+        </div>
+        <div class="code-body">
+<pre><span class="cm">-- Funnel general: tasa de conversión por etapa respecto al first_visit</span>
+<span class="kw">WITH</span> first_visit <span class="kw">AS</span> (
+  <span class="kw">SELECT DISTINCT</span> user_id
+  <span class="kw">FROM</span> mercadolibre_funnel
+  <span class="kw">WHERE</span> event_name = <span class="str">'first_visit'</span>
+    <span class="kw">AND</span> event_date <span class="kw">BETWEEN</span> <span class="str">'2025-01-01'</span> <span class="kw">AND</span> <span class="str">'2025-08-31'</span>
+),
+select_item <span class="kw">AS</span> (
+  <span class="kw">SELECT DISTINCT</span> user_id
+  <span class="kw">FROM</span> mercadolibre_funnel
+  <span class="kw">WHERE</span> event_name <span class="kw">IN</span> (<span class="str">'select_item'</span>, <span class="str">'select_promotion'</span>)
+    <span class="kw">AND</span> event_date <span class="kw">BETWEEN</span> <span class="str">'2025-01-01'</span> <span class="kw">AND</span> <span class="str">'2025-08-31'</span>
+),
+add_to_cart <span class="kw">AS</span> (
+  <span class="kw">SELECT DISTINCT</span> user_id <span class="kw">FROM</span> mercadolibre_funnel
+  <span class="kw">WHERE</span> event_name = <span class="str">'add_to_cart'</span>
+    <span class="kw">AND</span> event_date <span class="kw">BETWEEN</span> <span class="str">'2025-01-01'</span> <span class="kw">AND</span> <span class="str">'2025-08-31'</span>
+),
+begin_checkout <span class="kw">AS</span> (
+  <span class="kw">SELECT DISTINCT</span> user_id <span class="kw">FROM</span> mercadolibre_funnel
+  <span class="kw">WHERE</span> event_name = <span class="str">'begin_checkout'</span>
+    <span class="kw">AND</span> event_date <span class="kw">BETWEEN</span> <span class="str">'2025-01-01'</span> <span class="kw">AND</span> <span class="str">'2025-08-31'</span>
+),
+add_payment_info <span class="kw">AS</span> (
+  <span class="kw">SELECT DISTINCT</span> user_id <span class="kw">FROM</span> mercadolibre_funnel
+  <span class="kw">WHERE</span> event_name = <span class="str">'add_payment_info'</span>
+    <span class="kw">AND</span> event_date <span class="kw">BETWEEN</span> <span class="str">'2025-01-01'</span> <span class="kw">AND</span> <span class="str">'2025-08-31'</span>
+),
+purchase <span class="kw">AS</span> (
+  <span class="kw">SELECT DISTINCT</span> user_id <span class="kw">FROM</span> mercadolibre_funnel
+  <span class="kw">WHERE</span> event_name = <span class="str">'purchase'</span>
+    <span class="kw">AND</span> event_date <span class="kw">BETWEEN</span> <span class="str">'2025-01-01'</span> <span class="kw">AND</span> <span class="str">'2025-08-31'</span>
+),
+funnel_counts <span class="kw">AS</span> (
+  <span class="kw">SELECT</span>
+    <span class="fn">COUNT</span>(fv.user_id)  <span class="kw">AS</span> usuarios_first_visit,
+    <span class="fn">COUNT</span>(si.user_id)  <span class="kw">AS</span> usuarios_select_item,
+    <span class="fn">COUNT</span>(a.user_id)   <span class="kw">AS</span> usuarios_add_to_cart,
+    <span class="fn">COUNT</span>(bc.user_id)  <span class="kw">AS</span> usuarios_begin_checkout,
+    <span class="fn">COUNT</span>(api.user_id) <span class="kw">AS</span> usuarios_add_payment_info,
+    <span class="fn">COUNT</span>(p.user_id)   <span class="kw">AS</span> usuarios_purchase
+  <span class="kw">FROM</span> first_visit fv
+  <span class="kw">LEFT JOIN</span> select_item si   <span class="kw">ON</span> fv.user_id = si.user_id
+  <span class="kw">LEFT JOIN</span> add_to_cart a    <span class="kw">ON</span> fv.user_id = a.user_id
+  <span class="kw">LEFT JOIN</span> begin_checkout bc <span class="kw">ON</span> fv.user_id = bc.user_id
+  <span class="kw">LEFT JOIN</span> add_payment_info api <span class="kw">ON</span> fv.user_id = api.user_id
+  <span class="kw">LEFT JOIN</span> purchase p       <span class="kw">ON</span> fv.user_id = p.user_id
+)
+<span class="kw">SELECT</span>
+  <span class="fn">ROUND</span>(usuarios_select_item  * <span class="num">100.0</span> / <span class="fn">NULLIF</span>(usuarios_first_visit, <span class="num">0</span>), <span class="num">2</span>) <span class="kw">AS</span> conversion_select_item,
+  <span class="fn">ROUND</span>(usuarios_add_to_cart  * <span class="num">100.0</span> / <span class="fn">NULLIF</span>(usuarios_first_visit, <span class="num">0</span>), <span class="num">2</span>) <span class="kw">AS</span> conversion_add_to_cart,
+  <span class="fn">ROUND</span>(usuarios_begin_checkout * <span class="num">100.0</span> / <span class="fn">NULLIF</span>(usuarios_first_visit, <span class="num">0</span>), <span class="num">2</span>) <span class="kw">AS</span> conversion_begin_checkout,
+  <span class="fn">ROUND</span>(usuarios_add_payment_info * <span class="num">100.0</span> / <span class="fn">NULLIF</span>(usuarios_first_visit, <span class="num">0</span>), <span class="num">2</span>) <span class="kw">AS</span> conversion_add_payment_info,
+  <span class="fn">ROUND</span>(usuarios_purchase     * <span class="num">100.0</span> / <span class="fn">NULLIF</span>(usuarios_first_visit, <span class="num">0</span>), <span class="num">2</span>) <span class="kw">AS</span> conversion_purchase
+<span class="kw">FROM</span> funnel_counts;
+
+<span class="cm">-- Result: 76.90 | 11.01 | 4.00 | 2.09 | 1.25</span></pre>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename"><span class="code-dot"></span>cohort_retention.sql</span>
+          <span class="code-lang">SQL</span>
+        </div>
+        <div class="code-body">
+<pre><span class="cm">-- Retención por cohorte: usuarios activos en D7, D14, D21, D28</span>
+<span class="kw">WITH</span> cohort <span class="kw">AS</span> (
+  <span class="kw">SELECT</span>
+    user_id,
+    <span class="fn">TO_CHAR</span>(<span class="fn">DATE_TRUNC</span>(<span class="str">'month'</span>, <span class="fn">MIN</span>(signup_date)), <span class="str">'YYYY-MM'</span>) <span class="kw">AS</span> cohort
+  <span class="kw">FROM</span> mercadolibre_retention
+  <span class="kw">GROUP BY</span> user_id
+),
+activity <span class="kw">AS</span> (
+  <span class="kw">SELECT</span>
+    r.user_id,
+    c.cohort,
+    r.day_after_signup,
+    r.active
+  <span class="kw">FROM</span> mercadolibre_retention r
+  <span class="kw">LEFT JOIN</span> cohort c <span class="kw">ON</span> r.user_id = c.user_id
+  <span class="kw">WHERE</span> r.activity_date <span class="kw">BETWEEN</span> <span class="str">'2025-01-01'</span> <span class="kw">AND</span> <span class="str">'2025-08-31'</span>
+)
+<span class="kw">SELECT</span>
+  cohort,
+  <span class="fn">ROUND</span>(<span class="num">100.0</span> * <span class="fn">COUNT</span>(<span class="kw">DISTINCT CASE WHEN</span> day_after_signup >= <span class="num">7</span>  <span class="kw">AND</span> active = <span class="num">1</span> <span class="kw">THEN</span> user_id <span class="kw">END</span>) / <span class="fn">NULLIF</span>(<span class="fn">COUNT</span>(<span class="kw">DISTINCT</span> user_id), <span class="num">0</span>), <span class="num">1</span>) <span class="kw">AS</span> retention_d7_pct,
+  <span class="fn">ROUND</span>(<span class="num">100.0</span> * <span class="fn">COUNT</span>(<span class="kw">DISTINCT CASE WHEN</span> day_after_signup >= <span class="num">14</span> <span class="kw">AND</span> active = <span class="num">1</span> <span class="kw">THEN</span> user_id <span class="kw">END</span>) / <span class="fn">NULLIF</span>(<span class="fn">COUNT</span>(<span class="kw">DISTINCT</span> user_id), <span class="num">0</span>), <span class="num">1</span>) <span class="kw">AS</span> retention_d14_pct,
+  <span class="fn">ROUND</span>(<span class="num">100.0</span> * <span class="fn">COUNT</span>(<span class="kw">DISTINCT CASE WHEN</span> day_after_signup >= <span class="num">21</span> <span class="kw">AND</span> active = <span class="num">1</span> <span class="kw">THEN</span> user_id <span class="kw">END</span>) / <span class="fn">NULLIF</span>(<span class="fn">COUNT</span>(<span class="kw">DISTINCT</span> user_id), <span class="num">0</span>), <span class="num">1</span>) <span class="kw">AS</span> retention_d21_pct,
+  <span class="fn">ROUND</span>(<span class="num">100.0</span> * <span class="fn">COUNT</span>(<span class="kw">DISTINCT CASE WHEN</span> day_after_signup >= <span class="num">28</span> <span class="kw">AND</span> active = <span class="num">1</span> <span class="kw">THEN</span> user_id <span class="kw">END</span>) / <span class="fn">NULLIF</span>(<span class="fn">COUNT</span>(<span class="kw">DISTINCT</span> user_id), <span class="num">0</span>), <span class="num">1</span>) <span class="kw">AS</span> retention_d28_pct
+<span class="kw">FROM</span> activity
+<span class="kw">GROUP BY</span> cohort
+<span class="kw">ORDER BY</span> cohort;
+
+<span class="cm">-- Result sample: 2025-03 → D7: 87.7% | D14: 56.8% | D21: 26.6% | D28: 3.0%</span></pre>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename"><span class="code-dot"></span>funnel_by_country.sql</span>
+          <span class="code-lang">SQL</span>
+        </div>
+        <div class="code-body">
+<pre><span class="cm">-- Embudo segmentado por país — mismo patrón de CTEs con country como dimensión</span>
+<span class="kw">WITH</span> first_visits <span class="kw">AS</span> (
+  <span class="kw">SELECT DISTINCT</span> user_id, country
+  <span class="kw">FROM</span> mercadolibre_funnel
+  <span class="kw">WHERE</span> event_name = <span class="str">'first_visit'</span>
+    <span class="kw">AND</span> event_date <span class="kw">BETWEEN</span> <span class="str">'2025-01-01'</span> <span class="kw">AND</span> <span class="str">'2025-08-31'</span>
+),
+<span class="cm">-- [CTEs restantes: select_item, add_to_cart, begin_checkout,</span>
+<span class="cm">--  add_shipping_info, add_payment_info, purchase — mismo patrón + country]</span>
+funnel_counts <span class="kw">AS</span> (
+  <span class="kw">SELECT</span>
+    fv.country,
+    <span class="fn">COUNT</span>(fv.user_id)  <span class="kw">AS</span> usuarios_first_visit,
+    <span class="fn">COUNT</span>(si.user_id)  <span class="kw">AS</span> usuarios_select_item,
+    <span class="fn">COUNT</span>(a.user_id)   <span class="kw">AS</span> usuarios_add_to_cart,
+    <span class="fn">COUNT</span>(bc.user_id)  <span class="kw">AS</span> usuarios_begin_checkout,
+    <span class="fn">COUNT</span>(p.user_id)   <span class="kw">AS</span> usuarios_purchase
+  <span class="kw">FROM</span> first_visits fv
+  <span class="kw">LEFT JOIN</span> select_item si  <span class="kw">ON</span> fv.user_id = si.user_id  <span class="kw">AND</span> fv.country = si.country
+  <span class="kw">LEFT JOIN</span> add_to_cart a   <span class="kw">ON</span> fv.user_id = a.user_id   <span class="kw">AND</span> fv.country = a.country
+  <span class="kw">LEFT JOIN</span> begin_checkout bc <span class="kw">ON</span> fv.user_id = bc.user_id <span class="kw">AND</span> fv.country = bc.country
+  <span class="kw">LEFT JOIN</span> purchase p      <span class="kw">ON</span> fv.user_id = p.user_id   <span class="kw">AND</span> fv.country = p.country
+  <span class="kw">GROUP BY</span> fv.country
+)
+<span class="kw">SELECT</span>
+  country,
+  <span class="fn">ROUND</span>(usuarios_select_item   * <span class="num">100.0</span> / <span class="fn">NULLIF</span>(usuarios_first_visit, <span class="num">0</span>), <span class="num">2</span>) <span class="kw">AS</span> conv_select_item,
+  <span class="fn">ROUND</span>(usuarios_add_to_cart   * <span class="num">100.0</span> / <span class="fn">NULLIF</span>(usuarios_first_visit, <span class="num">0</span>), <span class="num">2</span>) <span class="kw">AS</span> conv_add_to_cart,
+  <span class="fn">ROUND</span>(usuarios_begin_checkout * <span class="num">100.0</span> / <span class="fn">NULLIF</span>(usuarios_first_visit, <span class="num">0</span>), <span class="num">2</span>) <span class="kw">AS</span> conv_begin_checkout,
+  <span class="fn">ROUND</span>(usuarios_purchase      * <span class="num">100.0</span> / <span class="fn">NULLIF</span>(usuarios_first_visit, <span class="num">0</span>), <span class="num">2</span>) <span class="kw">AS</span> conv_purchase
+<span class="kw">FROM</span> funnel_counts
+<span class="kw">ORDER BY</span> conv_purchase <span class="kw">DESC</span>;
+
+<span class="cm">-- Top: Uruguay 4.55% | Mexico 2.48% | Peru 1.82%</span>
+<span class="cm">-- Zero purchase: Ecuador 0.0% | Colombia 0.0% | Paraguay 0.0%</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- VISUALIZATIONS -->
+    <div id="p1-viz" class="tab-content">
+      <div class="viz-grid">
+        <div class="viz-card">
+          <div class="viz-title">Conversion Funnel · Global (Jan–Aug 2025)</div>
+          <div class="funnel">
+            <div class="funnel-stage">
+              <span class="funnel-stage-name" style="min-width:110px">first_visit</span>
+              <div class="funnel-bar-wrap">
+                <div class="funnel-bar" style="width:100%; background:#1D9E75;">
+                  <span class="funnel-bar-label">100% baseline</span>
+                </div>
+              </div>
+              <span class="funnel-pct">100%</span>
+            </div>
+            <div class="funnel-stage">
+              <span class="funnel-stage-name" style="min-width:110px">select_item</span>
+              <div class="funnel-bar-wrap">
+                <div class="funnel-bar" style="width:76.9%; background:#1D9E75;">
+                  <span class="funnel-bar-label">76.90%</span>
+                </div>
+              </div>
+              <span class="funnel-pct">76.9%</span>
+            </div>
+            <div class="funnel-stage">
+              <span class="funnel-stage-name" style="min-width:110px">add_to_cart</span>
+              <div class="funnel-bar-wrap">
+                <div class="funnel-bar" style="width:11%; background:#EF9F27;">
+                  <span class="funnel-bar-label" style="font-size:9px;color:#04201A">11.01%</span>
+                </div>
+              </div>
+              <span class="funnel-pct" style="color:#EF9F27">11.0%</span>
+            </div>
+            <div class="funnel-stage">
+              <span class="funnel-stage-name" style="min-width:110px">begin_checkout</span>
+              <div class="funnel-bar-wrap">
+                <div class="funnel-bar" style="width:4%; background:#D85A30;">
+                  <span class="funnel-bar-label" style="font-size:9px">4.00%</span>
+                </div>
+              </div>
+              <span class="funnel-pct" style="color:#D85A30">4.0%</span>
+            </div>
+            <div class="funnel-stage">
+              <span class="funnel-stage-name" style="min-width:110px">add_payment</span>
+              <div class="funnel-bar-wrap">
+                <div class="funnel-bar" style="width:2.09%; background:#993C1D;">
+                  <span class="funnel-bar-label" style="font-size:8px">2.09%</span>
+                </div>
+              </div>
+              <span class="funnel-pct" style="color:#F0997B">2.1%</span>
+            </div>
+            <div class="funnel-stage">
+              <span class="funnel-stage-name" style="min-width:110px">purchase</span>
+              <div class="funnel-bar-wrap">
+                <div class="funnel-bar" style="width:1.25%; background:#378ADD;">
+                  <span class="funnel-bar-label" style="font-size:8px">1.25%</span>
+                </div>
+              </div>
+              <span class="funnel-pct" style="color:#85B7EB">1.25%</span>
+            </div>
+          </div>
+          <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:14px;">
+            Critical drop: select_item → add_to_cart = <span style="color:#EF9F27">−85.7%</span> step-over-step
+          </p>
+        </div>
+
+        <div class="viz-card">
+          <div class="viz-title">Cohort Retention · D7 / D14 / D21 / D28</div>
+          <table class="cohort-table">
+            <thead>
+              <tr>
+                <th>Cohort</th>
+                <th>D7</th>
+                <th>D14</th>
+                <th>D21</th>
+                <th>D28</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Jan 2025</td><td class="cell-80">86.2%</td><td class="cell-60">56.2%</td><td class="cell-40">24.1%</td><td class="cell-20">3.0%</td></tr>
+              <tr><td>Feb 2025</td><td class="cell-80">86.8%</td><td class="cell-60">56.0%</td><td class="cell-40">24.6%</td><td class="cell-20">2.7%</td></tr>
+              <tr><td style="color:var(--teal-lt);font-weight:500">Mar 2025 ★</td><td class="cell-100">87.7%</td><td class="cell-60">56.8%</td><td class="cell-40">26.6%</td><td class="cell-20">3.0%</td></tr>
+              <tr><td>Apr 2025</td><td class="cell-80">87.2%</td><td class="cell-60">53.9%</td><td class="cell-40">23.0%</td><td class="cell-20">2.0%</td></tr>
+              <tr><td>May 2025</td><td class="cell-80">86.0%</td><td class="cell-60">54.5%</td><td class="cell-40">26.2%</td><td class="cell-20">3.0%</td></tr>
+              <tr><td>Jun 2025</td><td class="cell-80">85.9%</td><td class="cell-60">55.1%</td><td class="cell-40">25.2%</td><td class="cell-20">2.1%</td></tr>
+              <tr><td>Jul 2025</td><td class="cell-80">86.4%</td><td class="cell-60">56.4%</td><td class="cell-40">25.9%</td><td class="cell-20">2.7%</td></tr>
+              <tr><td style="color:#D85A30">Aug 2025 ↓</td><td class="cell-40">70.8%</td><td class="cell-20">29.7%</td><td class="cell-20">7.5%</td><td class="cell-20">0.2%</td></tr>
+            </tbody>
+          </table>
+          <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:10px;">
+            ★ Best cohort: Mar 2025 &nbsp;·&nbsp; ↓ Aug incomplete — cohort cut-off effect
+          </p>
+        </div>
+      </div>
+
+      <div class="viz-grid" style="margin-top:24px;">
+        <div class="viz-card" style="grid-column: span 2;">
+          <div class="viz-title">Purchase Conversion by Country (ordered by conv_purchase)</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+            <div>
+              <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--teal);margin-bottom:10px;letter-spacing:1px;">PURCHASE RATE</p>
+              <div class="bar-chart">
+                <div class="bar-row">
+                  <span class="bar-city">Uruguay</span>
+                  <div class="bar-track"><div class="bar-fill" style="width:100%;background:#1D9E75;">4.55%</div></div>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-city">Bolivia</span>
+                  <div class="bar-track"><div class="bar-fill" style="width:71%;background:#5DCAA5;color:#04342C">3.23%</div></div>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-city">Mexico</span>
+                  <div class="bar-track"><div class="bar-fill" style="width:54%;background:#9FE1CB;color:#04342C">2.48%</div></div>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-city">Peru</span>
+                  <div class="bar-track"><div class="bar-fill" style="width:40%;background:#9FE1CB;color:#04342C">1.82%</div></div>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-city">Argentina</span>
+                  <div class="bar-track"><div class="bar-fill" style="width:27%;background:#EF9F27;color:#04201A">1.25%</div></div>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-city">Chile</span>
+                  <div class="bar-track"><div class="bar-fill" style="width:22%;background:#EF9F27;color:#04201A">1.03%</div></div>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-city">Brazil</span>
+                  <div class="bar-track"><div class="bar-fill" style="width:15%;background:#D85A30;">0.68%</div></div>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-city">Ecuador</span>
+                  <div class="bar-track"><div class="bar-fill" style="width:2%;background:#993C1D;"></div></div>
+                  <span class="bar-val" style="color:#D85A30">0.00%</span>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-city">Colombia</span>
+                  <div class="bar-track"><div class="bar-fill" style="width:2%;background:#993C1D;"></div></div>
+                  <span class="bar-val" style="color:#D85A30">0.00%</span>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-city">Paraguay</span>
+                  <div class="bar-track"><div class="bar-fill" style="width:2%;background:#993C1D;"></div></div>
+                  <span class="bar-val" style="color:#D85A30">0.00%</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--teal);margin-bottom:10px;letter-spacing:1px;">D28 RETENTION BY COUNTRY</p>
+              <div class="bar-chart">
+                <div class="bar-row">
+                  <span class="bar-city">Peru</span>
+                  <div class="bar-track"><div class="bar-fill" style="width:100%;background:#1D9E75;">3.2%</div></div>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-city">Mexico</span>
+                  <div class="bar-track"><div class="bar-fill" style="width:97%;background:#1D9E75;">3.1%</div></div>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-city">Brazil</span>
+                  <div class="bar-track"><div class="bar-fill" style="width:78%;background:#5DCAA5;color:#04342C">2.5%</div></div>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-city">Bolivia</span>
+                  <div class="bar-track"><div class="bar-fill" style="width:78%;background:#5DCAA5;color:#04342C">2.5%</div></div>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-city">Ecuador</span>
+                  <div class="bar-track"><div class="bar-fill" style="width:78%;background:#5DCAA5;color:#04342C">2.5%</div></div>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-city">Uruguay</span>
+                  <div class="bar-track"><div class="bar-fill" style="width:78%;background:#5DCAA5;color:#04342C">2.5%</div></div>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-city">Paraguay</span>
+                  <div class="bar-track"><div class="bar-fill" style="width:66%;background:#9FE1CB;color:#04342C">2.1%</div></div>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-city">Argentina</span>
+                  <div class="bar-track"><div class="bar-fill" style="width:56%;background:#EF9F27;color:#04201A">1.8%</div></div>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-city">Chile</span>
+                  <div class="bar-track"><div class="bar-fill" style="width:53%;background:#EF9F27;color:#04201A">1.7%</div></div>
+                </div>
+                <div class="bar-row">
+                  <span class="bar-city">Colombia</span>
+                  <div class="bar-track"><div class="bar-fill" style="width:50%;background:#EF9F27;color:#04201A">1.6%</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONCLUSIONS -->
+    <div id="p1-conclusions" class="tab-content">
+      <div class="content-section">
+        <h4>Main Conclusions</h4>
+        <ul class="finding-list">
+          <li>The <strong>add-to-cart stage is the #1 revenue lever</strong>: an 85.7% step-over-step drop means 9 out of every 10 users who showed product intent never add anything to their cart. Even a 5% improvement here would multiply purchases significantly.</li>
+          <li><strong>Paraguay requires emergency intervention</strong>: 0% purchase rate and 100% abandonment at checkout suggests a structural payment or UX barrier. The platform may not support Paraguay's dominant payment methods.</li>
+          <li><strong>Uruguay is the conversion benchmark</strong> at 4.55% — 3.6× the global average. Its funnel behavior should be analyzed as a model for other markets: higher add-to-cart rates (22.7%) suggest better UX or pricing fit.</li>
+          <li>The <strong>August 2025 cohort shows artificially low retention</strong> (D28: 0.2%) due to the observation window cut-off — not a real behavioral drop. This cohort needs re-evaluation in Q4 2025.</li>
+          <li><strong>Mexico is the retention leader</strong> with the best D14 (55.8%) and D21 (25.5%) rates among all countries, making it the highest-LTV market in the dataset.</li>
+        </ul>
+      </div>
+      <div class="conclusion-card">
+        <p>
+          <strong>Top recommendation:</strong> Prioritize an A/B test on the product detail page — specifically the add-to-cart CTA, cart preview UX, and price anchoring. A secondary focus on Paraguay's checkout flow (payment method audit) could unlock an entirely new market segment. For retention, replicate Mexico's onboarding and notification patterns across lower-performing countries.
+        </p>
+      </div>
+      <div style="margin-top:20px;" class="conclusion-card">
+        <p>
+          <strong>Personal reflection:</strong> The biggest surprise was Paraguay's complete checkout abandonment — it's not a gradual funnel leak but a hard wall. This signals a systemic issue, not a behavioral one. It also reinforced why segmenting by country from the start matters: the global average masked a critical outlier.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── PROJECT 2: PYTHON ─── -->
+  <div class="project-card fade-in">
+    <div class="project-header">
+      <div>
+        <div class="project-type">Project 02 · Python · EDA</div>
+        <div class="project-title">Urban Mobility &amp; Economic<br/>Productivity in LATAM</div>
+        <div class="project-desc">
+          Exploratory data analysis of 15 major Latin American cities combining
+          TomTom Traffic Index (real-time congestion) with OECD Cities data (GDP per capita,
+          unemployment, PM2.5). Goal: identify where to invest in transport infrastructure
+          to maximize economic and social impact.
+        </div>
+      </div>
+      <div class="project-badges">
+        <span class="badge-tech">Python · Pandas · NumPy</span>
+        <span class="badge-tech">Matplotlib · Seaborn</span>
+        <span class="badge-tech">EDA · Data Merging</span>
+        <span class="badge-tech">TripleTen 2026</span>
+      </div>
+    </div>
+
+    <div class="project-tabs">
+      <button class="tab active" onclick="switchTab(this, 'p2-context')">Context</button>
+      <button class="tab" onclick="switchTab(this, 'p2-code')">Code</button>
+      <button class="tab" onclick="switchTab(this, 'p2-viz')">Visualizations</button>
+      <button class="tab" onclick="switchTab(this, 'p2-conclusions')">Conclusions</button>
+    </div>
+
+    <!-- CONTEXT -->
+    <div id="p2-context" class="tab-content active">
+      <div class="content-section">
+        <h4>Context</h4>
+        <p>Latin American cities face a paradox: rapid urbanization drives economic growth while simultaneously creating severe traffic congestion that erodes productivity. This project analyzed 2024 data from <strong>two real sources</strong> — TomTom Traffic Index and OECD Cities — merged and cleaned with Pandas to produce a unified 15-city dataset.</p>
+        <p>The dataset includes congestion metrics (traffic index, jams delay, jams count, km blocked), economic indicators (GDP per capita, unemployment %), air quality (PM2.5), and population. A correlation matrix was computed across all numerical variables.</p>
+      </div>
+      <div class="content-section">
+        <h4>Key Findings</h4>
+        <ul class="finding-list">
+          <li><strong>Bogotá has the highest traffic index (37.6)</strong> — worst congestion in the dataset — yet ranks only 10th in GDP. Classic congestion trap: high friction, moderate output.</li>
+          <li><strong>Mexico City is the paradox</strong>: 2nd highest traffic index (34.2) but 2nd best GDP ($21,111). High economic activity sustains itself despite — or because of — density.</li>
+          <li><strong>Montevideo is the efficiency benchmark</strong>: lowest congestion (17.0), highest GDP ($26,176), low PM2.5 (11.2). Best combined score in the dataset.</li>
+          <li><strong>Correlation between traffic index and GDP is near zero (r = 0.056)</strong> — no linear relationship. Cities develop through multiple pathways, not just mobility.</li>
+          <li><strong>Santiago is the outlier</strong>: high congestion (20.2) but lowest GDP ($2,277) — the worst efficiency ratio in the dataset. Structural investment needed.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CODE -->
+    <div id="p2-code" class="tab-content">
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename"><span class="code-dot"></span>data_loading_cleaning.py</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <div class="code-body">
+<pre><span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> seaborn <span class="kw">as</span> sns
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+
+<span class="cm"># Load two source datasets</span>
+traffic = pd.<span class="fn">read_csv</span>(<span class="str">'tomtom_traffic.csv'</span>)
+eco     = pd.<span class="fn">read_csv</span>(<span class="str">'oecd_city_economy.csv'</span>)
+
+<span class="cm"># Standardize column names</span>
+traffic.<span class="fn">rename</span>(columns={
+    <span class="str">'City'</span>:<span class="str">'city'</span>, <span class="str">'Country'</span>:<span class="str">'country'</span>,
+    <span class="str">'JamsDelay'</span>:<span class="str">'jams_delay'</span>, <span class="str">'TrafficIndexLive'</span>:<span class="str">'traffic_index_live'</span>,
+    <span class="str">'JamsLengthInKms'</span>:<span class="str">'jams_length_kms'</span>, <span class="str">'JamsCount'</span>:<span class="str">'jams_count'</span>,
+    <span class="str">'MinsDelay'</span>:<span class="str">'mins_delay'</span>,
+    <span class="str">'TravelTimeLivePer10KmsMins'</span>:<span class="str">'travel_time_live_per_10kms_mins'</span>,
+    <span class="str">'TravelTimeHistoricPer10KmsMins'</span>:<span class="str">'travel_time_hist_per_10kms_mins'</span>
+}, inplace=<span class="kw">True</span>)
+
+eco.<span class="fn">rename</span>(columns={
+    <span class="str">'City GDP/capita'</span>:<span class="str">'city_gdp_capita'</span>, <span class="str">'Unemployment %'</span>:<span class="str">'unemployment_pct'</span>,
+    <span class="str">'Country'</span>:<span class="str">'country'</span>, <span class="str">'Year'</span>:<span class="str">'year'</span>, <span class="str">'City'</span>:<span class="str">'city'</span>,
+    <span class="str">'Population (M)'</span>:<span class="str">'population_m'</span>, <span class="str">'PM2.5 (μg/m³)'</span>:<span class="str">'pm25'</span>
+}, inplace=<span class="kw">True</span>)
+
+<span class="cm"># Convert numeric fields (handle comma separators)</span>
+<span class="kw">for</span> col <span class="kw">in</span> [<span class="str">'city_gdp_capita'</span>, <span class="str">'unemployment_pct'</span>, <span class="str">'population_m'</span>]:
+    eco[col] = (eco[col].<span class="fn">astype</span>(<span class="str">'string'</span>)
+                         .<span class="fn">str</span>.<span class="fn">strip</span>()
+                         .<span class="fn">str</span>.<span class="fn">replace</span>(<span class="str">'.'</span>, <span class="str">''</span>, regex=<span class="kw">False</span>)
+                         .<span class="fn">str</span>.<span class="fn">replace</span>(<span class="str">','</span>, <span class="str">'.'</span>, regex=<span class="kw">False</span>))
+    eco[col] = pd.<span class="fn">to_numeric</span>(eco[col], errors=<span class="str">'coerce'</span>)
+
+eco[<span class="str">'population'</span>] = eco[<span class="str">'population_m'</span>] * <span class="num">1_000_000</span>
+
+<span class="cm"># Convert timestamps, extract year, filter 2024</span>
+traffic[<span class="str">'update_time_utc'</span>] = pd.<span class="fn">to_datetime</span>(traffic[<span class="str">'update_time_utc'</span>], errors=<span class="str">'coerce'</span>, utc=<span class="kw">True</span>)
+traffic[<span class="str">'year'</span>] = traffic[<span class="str">'update_time_utc'</span>].dt.year
+
+traffic_2024 = traffic[traffic[<span class="str">'year'</span>] == <span class="num">2024</span>].<span class="fn">copy</span>()
+eco_2024     = eco[eco[<span class="str">'year'</span>]     == <span class="num">2024</span>].<span class="fn">copy</span>()</pre>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename"><span class="code-dot"></span>merge_and_correlations.py</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <div class="code-body">
+<pre><span class="cm"># Aggregate traffic by city-year (daily snapshots → annual averages)</span>
+traffic_agg = (
+    traffic_2024
+    .<span class="fn">groupby</span>([<span class="str">'country'</span>, <span class="str">'city'</span>, <span class="str">'year'</span>])
+    .<span class="fn">agg</span>({
+        <span class="str">'jams_delay'</span>:                      <span class="str">'mean'</span>,
+        <span class="str">'traffic_index_live'</span>:             <span class="str">'mean'</span>,
+        <span class="str">'jams_length_kms'</span>:                <span class="str">'mean'</span>,
+        <span class="str">'jams_count'</span>:                     <span class="str">'mean'</span>,
+        <span class="str">'mins_delay'</span>:                     <span class="str">'mean'</span>,
+        <span class="str">'travel_time_live_per_10kms_mins'</span>:<span class="str">'mean'</span>,
+        <span class="str">'travel_time_hist_per_10kms_mins'</span>:<span class="str">'mean'</span>
+    })
+    .<span class="fn">reset_index</span>()
+)
+
+<span class="cm"># Merge traffic + economy on city + year</span>
+merged = pd.<span class="fn">merge</span>(
+    traffic_agg[[<span class="str">'city'</span>,<span class="str">'country'</span>,<span class="str">'year'</span>,<span class="str">'jams_delay'</span>,
+                  <span class="str">'traffic_index_live'</span>,<span class="str">'jams_length_kms'</span>,<span class="str">'jams_count'</span>,
+                  <span class="str">'mins_delay'</span>,<span class="str">'travel_time_live_per_10kms_mins'</span>,
+                  <span class="str">'travel_time_hist_per_10kms_mins'</span>]],
+    eco_2024[[<span class="str">'city'</span>,<span class="str">'year'</span>,<span class="str">'city_gdp_capita'</span>,
+               <span class="str">'unemployment_pct'</span>,<span class="str">'pm25'</span>,<span class="str">'population'</span>]],
+    on=[<span class="str">'city'</span>, <span class="str">'year'</span>], how=<span class="str">'inner'</span>
+)
+
+<span class="cm"># Correlation matrix across all numeric variables</span>
+corr_matrix = merged.<span class="fn">select_dtypes</span>(include=[<span class="str">'float64'</span>, <span class="str">'int64'</span>]).<span class="fn">corr</span>()
+<span class="fn">print</span>(corr_matrix[<span class="str">'traffic_index_live'</span>])
+
+<span class="cm"># Key result:</span>
+<span class="cm"># city_gdp_capita    →  0.056  (near-zero: no linear relationship)</span>
+<span class="cm"># jams_delay         →  0.765  (strong: congestion metrics co-move)</span>
+<span class="cm"># pm25               →  0.631  (traffic drives air pollution)</span>
+<span class="cm"># unemployment_pct   → -0.294  (mild: more congestion in higher-employment cities)</span>
+
+<span class="cm"># Export clean dataset</span>
+merged.<span class="fn">to_csv</span>(<span class="str">'ladb_mobility_economy_2024_clean.csv'</span>, index=<span class="kw">False</span>)</pre>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename"><span class="code-dot"></span>visualizations.py</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <div class="code-body">
+<pre><span class="cm"># Dual-axis bar chart: Congestion vs GDP per city</span>
+fig, ax1 = plt.<span class="fn">subplots</span>(figsize=(<span class="num">12</span>, <span class="num">8</span>))
+x_pos = <span class="fn">range</span>(<span class="fn">len</span>(merged))
+
+bars1 = ax1.<span class="fn">bar</span>([x - <span class="num">0.2</span> <span class="kw">for</span> x <span class="kw">in</span> x_pos], merged[<span class="str">'jams_delay'</span>],
+               width=<span class="num">0.4</span>, label=<span class="str">'Retraso por congestión'</span>,
+               color=<span class="str">'red'</span>, alpha=<span class="num">0.7</span>)
+ax2 = ax1.<span class="fn">twinx</span>()
+bars2 = ax2.<span class="fn">bar</span>([x + <span class="num">0.2</span> <span class="kw">for</span> x <span class="kw">in</span> x_pos], merged[<span class="str">'city_gdp_capita'</span>],
+               width=<span class="num">0.4</span>, label=<span class="str">'PIB per cápita'</span>,
+               color=<span class="str">'blue'</span>, alpha=<span class="num">0.7</span>)
+ax1.<span class="fn">set_xticks</span>(x_pos)
+ax1.<span class="fn">set_xticklabels</span>(merged[<span class="str">'city'</span>], rotation=<span class="num">45</span>, ha=<span class="str">'right'</span>)
+plt.<span class="fn">title</span>(<span class="str">'Comparación: Congestión vs PIB per cápita por Ciudad'</span>)
+
+<span class="cm"># Boxplot: distribution of jams_delay</span>
+sns.<span class="fn">boxplot</span>(data=merged, x=<span class="str">'jams_delay'</span>, showmeans=<span class="kw">True</span>)
+mean_val = merged[<span class="str">'jams_delay'</span>].<span class="fn">mean</span>()
+plt.<span class="fn">title</span>(f<span class="str">'Boxplot de JamsDelay (2024) — Promedio: {mean_val:.2f}'</span>)
+
+<span class="cm"># Histogram: GDP per capita distribution</span>
+merged[<span class="str">'city_gdp_capita'</span>].<span class="fn">hist</span>(bins=<span class="num">7</span>, figsize=(<span class="num">10</span>, <span class="num">5</span>))
+plt.<span class="fn">title</span>(<span class="str">'Distribución del PIB per cápita por ciudad'</span>)
+plt.<span class="fn">xlabel</span>(<span class="str">'PIB per cápita (USD)'</span>)
+plt.<span class="fn">ylabel</span>(<span class="str">'Frecuencia'</span>)</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- VISUALIZATIONS (rendered from real CSV data via inline JS) -->
+    <div id="p2-viz" class="tab-content">
+      <div class="viz-grid">
+        <!-- Traffic Index Ranking -->
+        <div class="viz-card">
+          <div class="viz-title">Traffic Index · 15 Cities (2024)</div>
+          <div class="bar-chart" id="traffic-bars"></div>
+        </div>
+        <!-- GDP Ranking -->
+        <div class="viz-card">
+          <div class="viz-title">GDP per Capita · USD (2024)</div>
+          <div class="bar-chart" id="gdp-bars"></div>
+        </div>
+      </div>
+
+      <div class="viz-grid" style="margin-top:24px;">
+        <!-- Scatter: traffic vs GDP -->
+        <div class="viz-card">
+          <div class="viz-title">Traffic Index vs GDP per Capita · Scatter (r = 0.056)</div>
+          <svg id="scatter-svg" viewBox="0 0 440 280" style="width:100%;" font-family="'DM Mono',monospace"></svg>
+          <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:6px;">
+            Bubble size = population &nbsp;·&nbsp; Near-zero correlation confirms no linear GDP–congestion relationship
+          </p>
+        </div>
+        <!-- Quadrant analysis -->
+        <div class="viz-card">
+          <div class="viz-title">Quadrant Analysis · Congestion vs GDP</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;">
+            <div style="background:rgba(29,158,117,0.1);border:1px solid rgba(29,158,117,0.25);border-radius:8px;padding:14px;">
+              <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--teal);letter-spacing:1px;margin-bottom:8px;">LOW TRAFFIC · HIGH GDP</p>
+              <p style="font-family:'DM Mono',monospace;font-size:11px;color:var(--teal-dim);">Montevideo</p>
+              <p style="font-family:'DM Mono',monospace;font-size:11px;color:var(--teal-dim);">Brasilia</p>
+              <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:6px;">Efficiency benchmark</p>
+            </div>
+            <div style="background:rgba(239,159,39,0.08);border:1px solid rgba(239,159,39,0.2);border-radius:8px;padding:14px;">
+              <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--amber);letter-spacing:1px;margin-bottom:8px;">HIGH TRAFFIC · HIGH GDP</p>
+              <p style="font-family:'DM Mono',monospace;font-size:11px;color:#FAC775;">Mexico City</p>
+              <p style="font-family:'DM Mono',monospace;font-size:11px;color:#FAC775;">Buenos Aires</p>
+              <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:6px;">High density paradox</p>
+            </div>
+            <div style="background:rgba(55,138,221,0.08);border:1px solid rgba(55,138,221,0.2);border-radius:8px;padding:14px;">
+              <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--blue-lt);letter-spacing:1px;margin-bottom:8px;">LOW TRAFFIC · LOW GDP</p>
+              <p style="font-family:'DM Mono',monospace;font-size:11px;color:var(--blue-lt);">Brasilia*</p>
+              <p style="font-family:'DM Mono',monospace;font-size:11px;color:var(--blue-lt);">Fortaleza</p>
+              <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:6px;">Growth potential</p>
+            </div>
+            <div style="background:rgba(216,90,48,0.08);border:1px solid rgba(216,90,48,0.2);border-radius:8px;padding:14px;">
+              <p style="font-family:'DM Mono',monospace;font-size:10px;color:#D85A30;letter-spacing:1px;margin-bottom:8px;">HIGH TRAFFIC · LOW GDP</p>
+              <p style="font-family:'DM Mono',monospace;font-size:11px;color:#F0997B;">Bogotá</p>
+              <p style="font-family:'DM Mono',monospace;font-size:11px;color:#F0997B;">Santiago</p>
+              <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:6px;">Priority: infrastructure</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Correlation strip -->
+      <div style="margin-top:24px;">
+        <div class="viz-card">
+          <div class="viz-title">Correlation with Traffic Index · All Variables</div>
+          <div id="corr-bars" style="display:flex;flex-direction:column;gap:8px;margin-top:10px;"></div>
+          <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:10px;">
+            Strong co-movement with jams_delay (0.765) confirms internal consistency · GDP near-zero (0.056)
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONCLUSIONS -->
+    <div id="p2-conclusions" class="tab-content">
+      <div class="content-section">
+        <h4>Main Conclusions</h4>
+        <ul class="finding-list">
+          <li><strong>No direct correlation between traffic and GDP (r = 0.056)</strong>. Urban productivity is multi-causal. Congestion alone does not explain economic performance — institutional quality, industry mix, and infrastructure investment all play roles.</li>
+          <li><strong>Mexico City defies the congestion trap</strong>: highest jams_delay (2,833) and 2nd highest GDP ($21,111). The city's economic density sustains output despite friction. However, investment in mobility would unlock further productivity gains.</li>
+          <li><strong>Santiago is the most inefficient city in the dataset</strong>: congestion index 20.2 (above median) but the lowest GDP ($2,277). This suggests structural economic issues beyond mobility — yet transport investment would reduce friction costs directly.</li>
+          <li><strong>Montevideo is the template</strong>: lowest traffic index (17.0), highest GDP ($26,176), best PM2.5 (11.2 μg/m³). Compact urban design + strong public transit = efficiency. Replicable in cities of similar scale.</li>
+          <li><strong>PM2.5 correlates strongly with traffic (r = 0.631)</strong> — congestion is not just an economic issue but a public health emergency. São Paulo (28.0 μg/m³) and Bogotá (17.6) have the highest pollution in the dataset.</li>
+        </ul>
+      </div>
+      <div class="conclusion-card">
+        <p>
+          <strong>Investment priority matrix:</strong> São Paulo and Bogotá require immediate infrastructure action (high congestion + health risk). Santiago needs structural economic + mobility co-investment. Mexico City should focus on demand management (congestion pricing, modal shift) rather than new road capacity. Montevideo and Brasilia serve as benchmarks for mid-size city planning.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- FOOTER -->
+<footer>
+  <div class="footer-name">Alejandro Blandón</div>
+  <div class="footer-links">
+    <a href="mailto:alejandroblandonvargas@gmail.com">Email</a>
+    <a href="https://linkedin.com/in/alejandro-blandon-vargas" target="_blank">LinkedIn</a>
+    <a href="https://github.com/AlejandroBlandonV" target="_blank">GitHub</a>
+  </div>
+  <div class="footer-copy">Data Analyst Jr · Medellín, Colombia · 2026</div>
+</footer>
+
+
+<script>
+  // Tab switcher
+  function switchTab(btn, targetId) {
+    var card = btn.closest('.project-card');
+    card.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+    card.querySelectorAll('.tab-content').forEach(function(c){ c.classList.remove('active'); });
+    btn.classList.add('active');
+    document.getElementById(targetId).classList.add('active');
+  }
+
+  // Intersection observer for fade-in
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('visible'); }
+    });
+  }, {threshold: 0.08});
+  document.querySelectorAll('.fade-in').forEach(function(el){ observer.observe(el); });
+
+  // ── PYTHON PROJECT CHARTS (real CSV data) ──
+  var cities = [
+    {city:'bogota',        country:'COL', traffic:37.6, gdp:11442, pop:11300000, unemp:10.0, pm25:17.6, jams:1141.6},
+    {city:'mexico-city',   country:'MEX', traffic:34.2, gdp:21111, pop:22100000, unemp:3.2,  pm25:22.3, jams:2833.1},
+    {city:'lima',          country:'PER', traffic:31.0, gdp:13472, pop:11200000, unemp:6.5,  pm25:19.7, jams:1052.3},
+    {city:'sao-paulo',     country:'BRA', traffic:26.9, gdp:14703, pop:22600000, unemp:8.5,  pm25:28.0, jams:1729.2},
+    {city:'rio-de-janeiro',country:'BRA', traffic:25.2, gdp:13349, pop:13700000, unemp:9.2,  pm25:18.4, jams:466.1},
+    {city:'recife',        country:'BRA', traffic:21.6, gdp:9189,  pop:4100000,  unemp:11.2, pm25:15.8, jams:112.8},
+    {city:'salvador',      country:'BRA', traffic:20.9, gdp:8899,  pop:3900000,  unemp:12.4, pm25:15.2, jams:86.4},
+    {city:'santiago',      country:'CHL', traffic:20.2, gdp:2277,  pop:7100000,  unemp:7.8,  pm25:21.3, jams:629.9},
+    {city:'belo-horizonte',country:'BRA', traffic:19.4, gdp:11124, pop:6100000,  unemp:9.5,  pm25:16.8, jams:263.0},
+    {city:'buenos-aires',  country:'ARG', traffic:17.8, gdp:18117, pop:15400000, unemp:7.2,  pm25:14.5, jams:571.1},
+    {city:'porto-alegre',  country:'BRA', traffic:17.7, gdp:11801, pop:4300000,  unemp:8.7,  pm25:14.2, jams:139.4},
+    {city:'montevideo',    country:'URY', traffic:17.0, gdp:26176, pop:1800000,  unemp:8.4,  pm25:11.2, jams:50.2},
+    {city:'fortaleza',     country:'BRA', traffic:15.9, gdp:8512,  pop:4200000,  unemp:11.8, pm25:14.6, jams:82.8},
+    {city:'curitiba',      country:'BRA', traffic:15.0, gdp:12381, pop:3700000,  unemp:8.2,  pm25:13.5, jams:183.5},
+    {city:'brasilia',      country:'BRA', traffic:11.3, gdp:16251, pop:4800000,  unemp:7.8,  pm25:12.8, jams:101.6}
+  ];
+
+  var maxTraffic = Math.max.apply(null, cities.map(function(d){return d.traffic;}));
+  var maxGdp     = Math.max.apply(null, cities.map(function(d){return d.gdp;}));
+
+  function colorForTraffic(t) {
+    if (t > 30) return '#D85A30';
+    if (t > 22) return '#EF9F27';
+    if (t > 18) return '#9FE1CB';
+    return '#1D9E75';
+  }
+  function colorForGdp(g) {
+    if (g > 20000) return '#1D9E75';
+    if (g > 14000) return '#5DCAA5';
+    if (g > 10000) return '#9FE1CB';
+    return '#EF9F27';
+  }
+
+  // Traffic bars
+  var tbEl = document.getElementById('traffic-bars');
+  if (tbEl) {
+    var sorted = cities.slice().sort(function(a,b){return b.traffic-a.traffic;});
+    sorted.forEach(function(d){
+      var pct = (d.traffic/maxTraffic*100).toFixed(1);
+      var col = colorForTraffic(d.traffic);
+      tbEl.innerHTML += '<div class="bar-row">' +
+        '<span class="bar-city" style="min-width:108px;font-size:10px">' + d.city + '</span>' +
+        '<div class="bar-track"><div class="bar-fill" style="width:' + pct + '%;background:' + col + ';color:#04201A;font-size:9px">' + d.traffic.toFixed(1) + '</div></div>' +
+        '</div>';
+    });
+  }
+
+  // GDP bars
+  var gbEl = document.getElementById('gdp-bars');
+  if (gbEl) {
+    var sortedGdp = cities.slice().sort(function(a,b){return b.gdp-a.gdp;});
+    sortedGdp.forEach(function(d){
+      var pct = (d.gdp/maxGdp*100).toFixed(1);
+      var col = colorForGdp(d.gdp);
+      gbEl.innerHTML += '<div class="bar-row">' +
+        '<span class="bar-city" style="min-width:108px;font-size:10px">' + d.city + '</span>' +
+        '<div class="bar-track"><div class="bar-fill" style="width:' + pct + '%;background:' + col + ';color:#04201A;font-size:9px">$' + d.gdp.toLocaleString() + '</div></div>' +
+        '</div>';
+    });
+  }
+
+  // Scatter SVG
+  var svgEl = document.getElementById('scatter-svg');
+  if (svgEl) {
+    var pad = {l:40, r:20, t:20, b:40};
+    var W = 440, H = 280;
+    var plotW = W - pad.l - pad.r;
+    var plotH = H - pad.t - pad.b;
+    var minT=10, maxT=40, minG=0, maxG=28000;
+
+    function xScale(t){ return pad.l + (t-minT)/(maxT-minT)*plotW; }
+    function yScale(g){ return pad.t + plotH - (g-minG)/(maxG-minG)*plotH; }
+    function rScale(p){ return Math.max(4, Math.min(14, Math.sqrt(p/1e6)*2.2)); }
+
+    var svg = '';
+    // Axes
+    svg += '<line x1="'+pad.l+'" y1="'+(pad.t+plotH)+'" x2="'+(W-pad.r)+'" y2="'+(pad.t+plotH)+'" stroke="#0F4D3A" stroke-width="1"/>';
+    svg += '<line x1="'+pad.l+'" y1="'+pad.t+'" x2="'+pad.l+'" y2="'+(pad.t+plotH)+'" stroke="#0F4D3A" stroke-width="1"/>';
+    // Axis labels
+    svg += '<text x="'+(pad.l+plotW/2)+'" y="'+(H-4)+'" fill="#3d6e5e" font-size="9" text-anchor="middle">Traffic Index →</text>';
+    svg += '<text x="10" y="'+(pad.t+plotH/2)+'" fill="#3d6e5e" font-size="9" text-anchor="middle" transform="rotate(-90,10,'+(pad.t+plotH/2)+')">GDP per capita →</text>';
+    // Trend line (approx)
+    svg += '<line x1="'+xScale(11)+'" y1="'+yScale(14000)+'" x2="'+xScale(38)+'" y2="'+yScale(15500)+'" stroke="#1D9E75" stroke-width="1" stroke-dasharray="4 3" opacity="0.3"/>';
+
+    var labels = {
+      'bogota':         {dx:6,  dy:-4},
+      'mexico-city':    {dx:6,  dy:-4},
+      'lima':           {dx:6,  dy:4},
+      'sao-paulo':      {dx:6,  dy:-6},
+      'santiago':       {dx:6,  dy:4},
+      'montevideo':     {dx:-4, dy:-8},
+      'brasilia':       {dx:6,  dy:4},
+      'buenos-aires':   {dx:-90,dy:-6}
+    };
+
+    cities.forEach(function(d){
+      var cx = xScale(d.traffic);
+      var cy = yScale(d.gdp);
+      var r  = rScale(d.pop);
+      var col = colorForTraffic(d.traffic);
+      svg += '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="'+col+'" opacity="0.82" stroke="'+col+'" stroke-width="0.5"/>';
+      if (labels[d.city]) {
+        var lbl = d.city.replace('-',' ').replace('-',' ');
+        svg += '<text x="'+(cx+labels[d.city].dx)+'" y="'+(cy+labels[d.city].dy)+'" fill="#9FE1CB" font-size="8">'+lbl+'</text>';
+      }
+    });
+
+    // r label
+    svg += '<text x="'+(W-pad.r-2)+'" y="'+(H-pad.b+14)+'" fill="#3d6e5e" font-size="9" text-anchor="end">r = 0.056</text>';
+    svgEl.innerHTML = svg;
+  }
+
+  // Correlation bars
+  var corrEl = document.getElementById('corr-bars');
+  if (corrEl) {
+    var corrs = [
+      {label:'jams_delay',        r:0.765,  col:'#1D9E75'},
+      {label:'pm25',              r:0.631,  col:'#5DCAA5'},
+      {label:'jams_length_kms',   r:0.590,  col:'#9FE1CB'},
+      {label:'jams_count',        r:0.560,  col:'#9FE1CB'},
+      {label:'mins_delay',        r:0.540,  col:'#9FE1CB'},
+      {label:'unemployment_pct',  r:-0.294, col:'#EF9F27'},
+      {label:'city_gdp_capita',   r:0.056,  col:'#3d6e5e'},
+    ];
+    corrs.forEach(function(d){
+      var absR = Math.abs(d.r);
+      var pct  = (absR * 100).toFixed(0);
+      var sign = d.r >= 0 ? '+' : '−';
+      corrEl.innerHTML +=
+        '<div style="display:flex;align-items:center;gap:10px;">' +
+          "<span style='font-family:monospace;font-size:10px;color:var(--text-sec);min-width:150px;text-align:right'>" + d.label + '</span>' +
+          '<div style="flex:1;background:rgba(29,158,117,0.06);border-radius:4px;height:18px;overflow:hidden">' +
+            '<div style="width:'+pct+'%;height:100%;background:'+d.col+';border-radius:4px;display:flex;align-items:center;padding-left:6px">' +
+              "<span style='font-family:monospace;font-size:9px;color:#04201A;font-weight:500'>"+sign+Math.abs(d.r).toFixed(3)+'</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+    });
+  }
+</script>
+</body>
+</html>
