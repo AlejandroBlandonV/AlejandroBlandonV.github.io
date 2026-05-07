@@ -923,11 +923,344 @@
   <h2>Selected Work</h2>
   <p class="projects-intro">Two end-to-end data projects from the TripleTen bootcamp — real datasets, real methodologies, real insights.</p>
 
-  <!-- ─── PROJECT 1: SQL ─── -->
+<!-- ─── PROJECT 1: ConnectaTel ─── -->
   <div class="project-card fade-in">
     <div class="project-header">
       <div>
-        <div class="project-type">Project 01 · SQL Analysis</div>
+        <div class="project-type">Project 01 · Python · EDA · Segmentation</div>
+        <div class="project-title">Customer Behavior Analysis<br/>for ConnectaTel</div>
+        <div class="project-desc">
+          End-to-end behavioral analysis of mobile service usage for ConnectaTel,
+          a telecom operating in Mexico and Colombia. Three datasets merged and cleaned
+          to build unified user profiles, detect outliers, and segment ~4,200 customers
+          by age group and usage level — generating actionable commercial recommendations.
+        </div>
+      </div>
+      <div class="project-badges">
+        <span class="badge-tech">Python · Pandas · NumPy</span>
+        <span class="badge-tech">Seaborn · Matplotlib</span>
+        <span class="badge-tech">IQR Outlier Detection</span>
+        <span class="badge-tech">Customer Segmentation</span>
+      </div>
+    </div>
+
+    <div class="project-tabs">
+      <button class="tab active" onclick="switchTab(this, 'p3-context')">Context</button>
+      <button class="tab" onclick="switchTab(this, 'p3-code')">Code</button>
+      <button class="tab" onclick="switchTab(this, 'p3-viz')">Visualizations</button>
+      <button class="tab" onclick="switchTab(this, 'p3-conclusions')">Conclusions</button>
+    </div>
+
+    <!-- CONTEXT -->
+    <div id="p3-context" class="tab-content active">
+      <div class="content-section">
+        <h4>Context</h4>
+        <p>ConnectaTel needed to understand how customers actually use their mobile plans (calls and messages) to optimize pricing, detect anomalies, and target the right segments. The analysis integrates <strong>three source tables</strong>: <code>plans.csv</code> (plan catalog), <code>users_latam.csv</code> (4,200+ customers), and <code>usage.csv</code> (granular event-level call/message logs).</p>
+        <p>The main challenges were data quality — invalid age values (<code>−999</code>), 11% missing cities, 55% missing call durations — and building a clean unified user profile from raw event logs through aggregation and merging.</p>
+      </div>
+      <div class="content-section">
+        <h4>Key Findings</h4>
+        <ul class="finding-list">
+          <li><strong>Adults (30–59) are the core segment at 50%</strong> of total users. This is ConnectaTel's primary revenue base and highest loyalty opportunity.</li>
+          <li><strong>Young users under 30 represent less than 20%</strong> (~750 users) — critical gap given that this is the highest mobile-consuming demographic.</li>
+          <li><strong>~3,000 users classified as "Medium Use"</strong> (5–9 calls and messages). Under 500 users reach "High Use" — suggesting most plans are underutilized.</li>
+          <li><strong>Basic plan dominates at 68%</strong> vs Premium at 31% — raises the strategic question of whether Premium is priced too high or differentiated too little.</li>
+          <li><strong>Call duration has significant outliers</strong> detected via IQR method — extreme values warrant fraud review or data entry audit.</li>
+          <li><strong>churn_date nulls (88.35%) are valid</strong> — confirmed as active users, not data errors. Treated as MAR-informed retention signal.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CODE -->
+    <div id="p3-code" class="tab-content">
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename"><span class="code-dot"></span>data_loading_cleaning.py</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <div class="code-body">
+<pre><span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> seaborn <span class="kw">as</span> sns
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+
+<span class="cm"># Load three source datasets</span>
+plans = pd.<span class="fn">read_csv</span>(<span class="str">'/datasets/plans.csv'</span>)
+users = pd.<span class="fn">read_csv</span>(<span class="str">'/datasets/users_latam.csv'</span>)
+usage = pd.<span class="fn">read_csv</span>(<span class="str">'/datasets/usage.csv'</span>)
+
+<span class="cm"># ── DATE CONVERSIONS ──────────────────────────────</span>
+users[<span class="str">'reg_date'</span>]   = pd.<span class="fn">to_datetime</span>(users[<span class="str">'reg_date'</span>],   errors=<span class="str">'coerce'</span>)
+users[<span class="str">'churn_date'</span>] = pd.<span class="fn">to_datetime</span>(users[<span class="str">'churn_date'</span>], errors=<span class="str">'coerce'</span>)
+usage[<span class="str">'date'</span>]       = pd.<span class="fn">to_datetime</span>(usage[<span class="str">'date'</span>],       errors=<span class="str">'coerce'</span>)
+
+<span class="cm"># ── INVALID AGE: replace -999 with median ─────────</span>
+age_mediana = users[<span class="str">'age'</span>].<span class="fn">median</span>()
+users[<span class="str">'age'</span>] = users[<span class="str">'age'</span>].<span class="fn">replace</span>(<span class="num">-999</span>, age_mediana)
+
+<span class="cm"># ── MISSING CITY: replace '?' with pd.NA ──────────</span>
+users[<span class="str">'city'</span>] = users[<span class="str">'city'</span>].<span class="fn">replace</span>(<span class="str">'?'</span>, pd.NA)
+
+<span class="cm"># ── FUTURE DATES: mark 2026 reg_date as NaT ───────</span>
+users.<span class="fn">loc</span>[users[<span class="str">'reg_date'</span>].dt.year == <span class="num">2026</span>, <span class="str">'reg_date'</span>] = pd.NaT
+users = users.<span class="fn">dropna</span>(subset=[<span class="str">'reg_date'</span>]).<span class="fn">reset_index</span>(drop=<span class="kw">True</span>)
+
+<span class="cm"># ── USAGE: drop rows with null date (0.125%) ──────</span>
+usage = usage.<span class="fn">dropna</span>(subset=[<span class="str">'date'</span>]).<span class="fn">reset_index</span>(drop=<span class="kw">True</span>)
+
+<span class="cm"># ── VERIFY MAR for duration (55.19%) & length (44.74%)</span>
+<span class="cm"># Both confirmed MAR → keep nulls, do not impute</span>
+usage[<span class="str">'duration'</span>].<span class="fn">isna</span>().<span class="fn">groupby</span>(usage[<span class="str">'type'</span>]).<span class="fn">mean</span>().<span class="fn">sort_values</span>()
+usage[<span class="str">'length'</span>].<span class="fn">isna</span>().<span class="fn">groupby</span>(usage[<span class="str">'type'</span>]).<span class="fn">mean</span>().<span class="fn">sort_values</span>()</pre>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename"><span class="code-dot"></span>aggregation_merge.py</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <div class="code-body">
+<pre><span class="cm"># ── CREATE BINARY FLAGS FOR AGGREGATION ───────────</span>
+usage[<span class="str">"is_text"</span>] = (usage[<span class="str">"type"</span>] == <span class="str">"text"</span>).<span class="fn">astype</span>(<span class="fn">int</span>)
+usage[<span class="str">"is_call"</span>] = (usage[<span class="str">"type"</span>] == <span class="str">"call"</span>).<span class="fn">astype</span>(<span class="fn">int</span>)
+
+<span class="cm"># ── AGGREGATE USAGE PER USER ──────────────────────</span>
+usage_agg = usage.<span class="fn">groupby</span>(<span class="str">'user_id'</span>).<span class="fn">agg</span>({
+    <span class="str">'is_text'</span>:  <span class="str">'sum'</span>,   <span class="cm"># total messages sent</span>
+    <span class="str">'is_call'</span>:  <span class="str">'sum'</span>,   <span class="cm"># total calls made</span>
+    <span class="str">'duration'</span>: <span class="str">'sum'</span>    <span class="cm"># total call minutes</span>
+}).<span class="fn">reset_index</span>().<span class="fn">rename</span>(columns={
+    <span class="str">'is_text'</span>:  <span class="str">'cant_mensajes'</span>,
+    <span class="str">'is_call'</span>:  <span class="str">'cant_llamadas'</span>,
+    <span class="str">'duration'</span>: <span class="str">'cant_minutos_llamada'</span>
+})
+usage_agg[<span class="str">'cant_minutos_llamada'</span>] = usage_agg[<span class="str">'cant_minutos_llamada'</span>].<span class="fn">fillna</span>(<span class="num">0</span>)
+
+<span class="cm"># ── MERGE INTO UNIFIED USER PROFILE ───────────────</span>
+user_profile = users.<span class="fn">merge</span>(usage_agg, on=<span class="str">'user_id'</span>, how=<span class="str">'left'</span>)
+
+<span class="cm"># ── CHURN STATUS FROM churn_date NULLS ────────────</span>
+user_profile[<span class="str">'churn_status'</span>] = user_profile[<span class="str">'churn_date'</span>].<span class="fn">isna</span>().<span class="fn">map</span>({
+    <span class="kw">True</span>: <span class="str">'Activo'</span>, <span class="kw">False</span>: <span class="str">'Churn'</span>
+})</pre>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-filename"><span class="code-dot"></span>segmentation_outliers.py</span>
+          <span class="code-lang">Python</span>
+        </div>
+        <div class="code-body">
+<pre><span class="cm"># ── IQR OUTLIER DETECTION ─────────────────────────</span>
+columnas_limites = [<span class="str">'cant_mensajes'</span>, <span class="str">'cant_llamadas'</span>, <span class="str">'cant_minutos_llamada'</span>]
+<span class="kw">for</span> col <span class="kw">in</span> columnas_limites:
+    Q1    = user_profile[col].<span class="fn">quantile</span>(<span class="num">0.25</span>)
+    Q3    = user_profile[col].<span class="fn">quantile</span>(<span class="num">0.75</span>)
+    IQR   = Q3 - Q1
+    lower = Q1 - <span class="num">1.5</span> * IQR
+    upper = Q3 + <span class="num">1.5</span> * IQR
+    outliers = ((user_profile[col] > upper) | (user_profile[col] < lower)).<span class="fn">sum</span>()
+    <span class="fn">print</span>(f<span class="str">"{col}: lower={lower:.1f}, upper={upper:.1f}, outliers={outliers}"</span>)
+
+<span class="cm"># ── USAGE SEGMENTATION ────────────────────────────</span>
+<span class="kw">def</span> <span class="fn">classify_uso</span>(row):
+    l, m = row[<span class="str">'cant_llamadas'</span>], row[<span class="str">'cant_mensajes'</span>]
+    <span class="kw">if</span> pd.<span class="fn">isna</span>(l) <span class="kw">or</span> pd.<span class="fn">isna</span>(m): <span class="kw">return</span> <span class="str">'Error en Datos'</span>
+    <span class="kw">if</span>   l < <span class="num">5</span>  <span class="kw">and</span> m < <span class="num">5</span>:  <span class="kw">return</span> <span class="str">'Bajo uso'</span>
+    <span class="kw">elif</span> l < <span class="num">10</span> <span class="kw">and</span> m < <span class="num">10</span>: <span class="kw">return</span> <span class="str">'Uso medio'</span>
+    <span class="kw">else</span>:                      <span class="kw">return</span> <span class="str">'Alto uso'</span>
+user_profile[<span class="str">'grupo_uso'</span>] = user_profile.<span class="fn">apply</span>(classify_uso, axis=<span class="num">1</span>)
+
+<span class="cm"># ── AGE SEGMENTATION ──────────────────────────────</span>
+<span class="kw">def</span> <span class="fn">classify_edad</span>(row):
+    a = row[<span class="str">'age'</span>]
+    <span class="kw">if</span> pd.<span class="fn">isna</span>(a): <span class="kw">return</span> <span class="str">'Error en Datos'</span>
+    <span class="kw">if</span>   a < <span class="num">30</span>: <span class="kw">return</span> <span class="str">'Joven'</span>
+    <span class="kw">elif</span> a < <span class="num">60</span>: <span class="kw">return</span> <span class="str">'Adulto'</span>
+    <span class="kw">else</span>:        <span class="kw">return</span> <span class="str">'Adulto Mayor'</span>
+user_profile[<span class="str">'grupo_edad'</span>] = user_profile.<span class="fn">apply</span>(classify_edad, axis=<span class="num">1</span>)
+
+<span class="cm"># ── VISUALIZATIONS ────────────────────────────────</span>
+<span class="kw">for</span> col, title, xlabel <span class="kw">in</span> [
+    (<span class="str">'age'</span>,               <span class="str">'Distribución de Edades'</span>,               <span class="str">'Edades'</span>),
+    (<span class="str">'cant_mensajes'</span>,     <span class="str">'Distribución de Cantidad de Mensajes'</span>,  <span class="str">'Mensajes'</span>),
+    (<span class="str">'cant_llamadas'</span>,     <span class="str">'Distribución de Cantidad de Llamadas'</span>,  <span class="str">'Llamadas'</span>),
+    (<span class="str">'cant_minutos_llamada'</span>,<span class="str">'Distribución de Minutos por Llamada'</span>, <span class="str">'Minutos'</span>),
+]:
+    sns.<span class="fn">histplot</span>(data=user_profile, x=col, hue=<span class="str">'plan'</span>, bins=<span class="num">10</span>,
+                  palette=[<span class="str">'skyblue'</span>, <span class="str">'green'</span>])
+    plt.<span class="fn">title</span>(title); plt.<span class="fn">xlabel</span>(xlabel); plt.<span class="fn">show</span>()</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- VISUALIZATIONS -->
+    <div id="p3-viz" class="tab-content">
+      <div class="viz-grid">
+
+        <!-- Age segments -->
+        <div class="viz-card">
+          <div class="viz-title">Customer Segments by Age Group</div>
+          <div class="bar-chart" style="margin-top:8px;">
+            <div class="bar-row">
+              <span class="bar-city" style="min-width:100px">Adulto</span>
+              <div class="bar-track">
+                <div class="bar-fill" style="width:100%;background:#1D9E75;color:#04201A">~2,100 · 50%</div>
+              </div>
+            </div>
+            <div class="bar-row">
+              <span class="bar-city" style="min-width:100px">Adulto Mayor</span>
+              <div class="bar-track">
+                <div class="bar-fill" style="width:60%;background:#5DCAA5;color:#04342C">~1,260 · 30%</div>
+              </div>
+            </div>
+            <div class="bar-row">
+              <span class="bar-city" style="min-width:100px">Joven</span>
+              <div class="bar-track">
+                <div class="bar-fill" style="width:36%;background:#EF9F27;color:#04201A">~750 · 18%</div>
+              </div>
+            </div>
+          </div>
+          <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:14px;">
+            Young users (&lt;30) = <span style="color:#EF9F27">critical gap</span> · Highest mobile-consuming segment yet underrepresented
+          </p>
+        </div>
+
+        <!-- Usage segments -->
+        <div class="viz-card">
+          <div class="viz-title">Customer Segments by Usage Level</div>
+          <div class="bar-chart" style="margin-top:8px;">
+            <div class="bar-row">
+              <span class="bar-city" style="min-width:100px">Uso medio</span>
+              <div class="bar-track">
+                <div class="bar-fill" style="width:100%;background:#1D9E75;color:#04201A">~3,000 users</div>
+              </div>
+            </div>
+            <div class="bar-row">
+              <span class="bar-city" style="min-width:100px">Bajo uso</span>
+              <div class="bar-track">
+                <div class="bar-fill" style="width:40%;background:#EF9F27;color:#04201A">~1,200 users</div>
+              </div>
+            </div>
+            <div class="bar-row">
+              <span class="bar-city" style="min-width:100px">Alto uso</span>
+              <div class="bar-track">
+                <div class="bar-fill" style="width:16%;background:#D85A30">~480 users</div>
+              </div>
+            </div>
+          </div>
+          <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:14px;">
+            Only <span style="color:#D85A30">&lt;500 users</span> reach High Use (10+ calls AND 10+ messages)
+          </p>
+        </div>
+      </div>
+
+      <div class="viz-grid" style="margin-top:24px;">
+
+        <!-- Plan distribution donut-style -->
+        <div class="viz-card">
+          <div class="viz-title">Plan Distribution</div>
+          <svg viewBox="0 0 300 160" style="width:100%" font-family="monospace">
+            <!-- Basic bar -->
+            <rect x="20" y="30" width="260" height="30" rx="4" fill="rgba(29,158,117,0.08)" stroke="#0F4D3A" stroke-width="0.5"/>
+            <rect x="20" y="30" width="177" height="30" rx="4" fill="#1D9E75"/>
+            <text x="30" y="51" fill="#04201A" font-size="11" font-weight="500">Básico — 68%</text>
+            <!-- Premium bar -->
+            <rect x="20" y="72" width="260" height="30" rx="4" fill="rgba(55,138,221,0.08)" stroke="#0F4D3A" stroke-width="0.5"/>
+            <rect x="20" y="72" width="81" height="30" rx="4" fill="#378ADD"/>
+            <text x="30" y="93" fill="#04201A" font-size="11" font-weight="500">Premium — 31%</text>
+            <!-- Labels -->
+            <text x="205" y="51" fill="#9FE1CB" font-size="10">~2,856 users</text>
+            <text x="109" y="93" fill="#85B7EB" font-size="10">~1,302 users</text>
+            <!-- Question -->
+            <text x="20" y="140" fill="#3d6e5e" font-size="9">Strategic Q: Is Premium underpriced or underdifferentiated?</text>
+          </svg>
+        </div>
+
+        <!-- Outlier / IQR analysis -->
+        <div class="viz-card">
+          <div class="viz-title">IQR Outlier Detection · Call Minutes</div>
+          <svg viewBox="0 0 300 160" style="width:100%" font-family="monospace">
+            <!-- Box plot mockup -->
+            <line x1="40" y1="80" x2="260" y2="80" stroke="#0F4D3A" stroke-width="1"/>
+            <!-- Whiskers -->
+            <line x1="60" y1="60" x2="60" y2="100" stroke="#1D9E75" stroke-width="2"/>
+            <line x1="60" y1="80" x2="85" y2="80" stroke="#1D9E75" stroke-width="2"/>
+            <!-- Box Q1-Q3 -->
+            <rect x="85" y="58" width="90" height="44" rx="3" fill="rgba(29,158,117,0.15)" stroke="#1D9E75" stroke-width="1.5"/>
+            <!-- Median line -->
+            <line x1="130" y1="58" x2="130" y2="102" stroke="#5DCAA5" stroke-width="2"/>
+            <!-- Right whisker -->
+            <line x1="175" y1="80" x2="200" y2="80" stroke="#1D9E75" stroke-width="2"/>
+            <line x1="200" y1="60" x2="200" y2="100" stroke="#1D9E75" stroke-width="2"/>
+            <!-- Outlier dots -->
+            <circle cx="222" cy="80" r="4" fill="#EF9F27" opacity="0.9"/>
+            <circle cx="238" cy="74" r="4" fill="#D85A30" opacity="0.9"/>
+            <circle cx="250" cy="83" r="4" fill="#D85A30" opacity="0.9"/>
+            <!-- Labels -->
+            <text x="85"  y="120" fill="#7BBCA8" font-size="9" text-anchor="middle">Q1</text>
+            <text x="175" y="120" fill="#7BBCA8" font-size="9" text-anchor="middle">Q3</text>
+            <text x="200" y="120" fill="#7BBCA8" font-size="9" text-anchor="middle">Upper</text>
+            <text x="238" y="120" fill="#EF9F27" font-size="9" text-anchor="middle">Outliers</text>
+            <text x="40" y="140" fill="#3d6e5e" font-size="9">Extreme call durations → potential fraud or data entry errors</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Data quality summary -->
+      <div style="margin-top:24px;">
+        <div class="viz-card">
+          <div class="viz-title">Data Quality Audit · Null Handling Decisions</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:10px;">
+            <div style="background:rgba(29,158,117,0.07);border:1px solid rgba(29,158,117,0.2);border-radius:8px;padding:14px;">
+              <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--teal);letter-spacing:1px;margin-bottom:6px;">KEPT AS NULL</p>
+              <p style="font-family:'DM Mono',monospace;font-size:11px;color:var(--teal-dim);">churn_date — 88.35%</p>
+              <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:4px;">Active users have no churn date by definition</p>
+            </div>
+            <div style="background:rgba(29,158,117,0.07);border:1px solid rgba(29,158,117,0.2);border-radius:8px;padding:14px;">
+              <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--teal);letter-spacing:1px;margin-bottom:6px;">MAR — KEPT</p>
+              <p style="font-family:'DM Mono',monospace;font-size:11px;color:var(--teal-dim);">duration — 55.19%</p>
+              <p style="font-family:'DM Mono',monospace;font-size:11px;color:var(--teal-dim);">length — 44.74%</p>
+              <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:4px;">Missing at random — confirmed by type analysis</p>
+            </div>
+            <div style="background:rgba(239,159,39,0.07);border:1px solid rgba(239,159,39,0.2);border-radius:8px;padding:14px;">
+              <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--amber);letter-spacing:1px;margin-bottom:6px;">IMPUTED / DROPPED</p>
+              <p style="font-family:'DM Mono',monospace;font-size:11px;color:#FAC775;">age −999 → median</p>
+              <p style="font-family:'DM Mono',monospace;font-size:11px;color:#FAC775;">city ? → pd.NA</p>
+              <p style="font-family:'DM Mono',monospace;font-size:11px;color:#FAC775;">date nulls → dropped (0.125%)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONCLUSIONS -->
+    <div id="p3-conclusions" class="tab-content">
+      <div class="content-section">
+        <h4>Main Conclusions</h4>
+        <ul class="finding-list">
+          <li>The <strong>adult segment (30–59) is ConnectaTel's foundation</strong> — 50% of the base. Loyalty programs tied to tenure history (plan discounts, partner benefits) would directly protect the highest-value cohort.</li>
+          <li><strong>Young users are the biggest growth gap</strong>: less than 20% of the base despite being the highest mobile-consuming demographic. Targeted campaigns — free trials, discounts, social-first features — are the priority lever for acquisition.</li>
+          <li><strong>Plan underutilization is widespread</strong>: nearly 3,000 users stay in "medium use" and under 500 reach "high use." This suggests plans may not be well-designed to incentivize usage, or that marketing of included minutes/messages is ineffective.</li>
+          <li>The <strong>68% Basic vs 31% Premium split</strong> raises a key question: is the price gap too wide? Reducing Premium price or enriching its benefits could shift a meaningful share of the 68% — improving ARPU without acquiring new users.</li>
+          <li><strong>Extreme call duration outliers require audit</strong>: IQR detection found users with abnormally high call minutes. These could indicate billing fraud, data entry errors, or reseller activity — all high-priority risk scenarios for a telecom.</li>
+        </ul>
+      </div>
+      <div class="conclusion-card">
+        <p>
+          <strong>Top 3 actions:</strong> (1) Launch a youth acquisition campaign with experimental pricing. (2) Audit outlier call-duration users for fraud risk. (3) Run an A/B test on Premium plan pricing — model the revenue tradeoff between margin per user and increased Premium adoption at a lower price point.
+        </p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ─── PROJECT 2: SQL ─── -->
+  <div class="project-card fade-in">
+    <div class="project-header">
+      <div>
+        <div class="project-type">Project 02 · SQL Analysis</div>
         <div class="project-title">Funnel &amp; Retention Analysis<br/>for MercadoLibre</div>
         <div class="project-desc">
           End-to-end behavioral analysis of MercadoLibre users using real event-level data
@@ -1342,11 +1675,11 @@ funnel_counts <span class="kw">AS</span> (
     </div>
   </div>
 
-  <!-- ─── PROJECT 2: PYTHON ─── -->
+  <!-- ─── PROJECT 3: PYTHON ─── -->
   <div class="project-card fade-in">
     <div class="project-header">
       <div>
-        <div class="project-type">Project 02 · Python · EDA</div>
+        <div class="project-type">Project 03 · Python · EDA</div>
         <div class="project-title">Urban Mobility &amp; Economic<br/>Productivity in LATAM</div>
         <div class="project-desc">
           Exploratory data analysis of 15 major Latin American cities combining
